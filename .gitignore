@@ -1,0 +1,7 @@
+dataset/
+*.zip
+*.tar.gz
+__pycache__/
+.ipynb_checkpoints/
+*.log
+output/candidate_pairs.tsv
