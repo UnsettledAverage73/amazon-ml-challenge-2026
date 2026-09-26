@@ -5,3 +5,5 @@ __pycache__/
 .ipynb_checkpoints/
 *.log
 output/candidate_pairs.tsv
+output/*backup*.tsv
+catboost_info/

@@ -33,7 +33,11 @@ GENERIC_TERMS = {
     'traders', 'trading', 'hotel', 'restaurant', 'cafe', 'bazaar', 'jewellers',
     'jewellery', 'textiles', 'pharmacy', 'chemist', 'auto', 'garage', 'consultants',
     'consultancy', 'logistics', 'transports', 'centre', 'center', 'foods', 'retail',
-    'wholesale', 'supply', 'supplies', 'commercial'
+    'wholesale', 'supply', 'supplies', 'commercial',
+    # French common generic business terms
+    'agence', 'agences', 'societe', 'societes', 'boulangerie', 'coiffure', 'boucherie',
+    'epicerie', 'atelier', 'ateliers', 'commerce', 'commerces', 'batiment', 'menuiserie',
+    'plomberie', 'electricite', 'tabac'
 }
 
 def strip_accents(text: str) -> str:
@@ -373,7 +377,12 @@ def main():
                         m_list = [cid for cid, p, th in scored_list if p >= th][:3]
                         c_list = [cid for cid, _, _ in scored_list[:4]]
 
-                        s1_matches[g_idx].extend(m_list)
+                        # Enforce global 1-to-1 assignment per target
+                        for cid, p, th in scored_list:
+                            if p >= th:
+                                if cid not in target_best_s1 or p > target_best_s1[cid][0]:
+                                    target_best_s1[cid] = (p, g_idx)
+
                         for c in c_list:
                             if c not in s1_candidates[g_idx]:
                                 s1_candidates[g_idx].append(c)
@@ -382,10 +391,15 @@ def main():
 
             elapsed = time.time() - s_start
             rate = len(s1_country_list) / elapsed if elapsed > 0 else 0
-            print(f"  [{country} - {prefix}] Done in {elapsed:.1f}s ({rate:.0f} recs/s) | Matches: {matches_found}")
+            print(f"  [{country} - {prefix}] Done in {elapsed:.1f}s ({rate:.0f} recs/s) | Raw Pairs Scored: {matches_found}")
 
             del target_records, name_index, door_index, pin_index
             gc.collect()
+
+    # Step 3.5: Populate s1_matches from global 1-to-1 target_best_s1
+    print("\nStep 3.5: Enforcing global 1-to-1 target resolution...")
+    for cid, (prob, g_idx) in target_best_s1.items():
+        s1_matches[g_idx].append(cid)
 
     # Step 4: Write Final Output TSVs with Superset Guarantee
     print("\nStep 4: Writing final TSVs...")

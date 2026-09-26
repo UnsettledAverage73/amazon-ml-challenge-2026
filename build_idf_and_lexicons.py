@@ -27,7 +27,11 @@ GENERIC_TERMS = {
     'traders', 'trading', 'hotel', 'restaurant', 'cafe', 'bazaar', 'jewellers',
     'jewellery', 'textiles', 'pharmacy', 'chemist', 'auto', 'garage', 'consultants',
     'consultancy', 'logistics', 'transports', 'centre', 'center', 'foods', 'retail',
-    'wholesale', 'supply', 'supplies', 'commercial'
+    'wholesale', 'supply', 'supplies', 'commercial',
+    # French common generic business terms
+    'agence', 'agences', 'societe', 'societes', 'boulangerie', 'coiffure', 'boucherie',
+    'epicerie', 'atelier', 'ateliers', 'commerce', 'commerces', 'batiment', 'menuiserie',
+    'plomberie', 'electricite', 'tabac'
 }
 
 def strip_accents(text: str) -> str:
