@@ -7,3 +7,8 @@ __pycache__/
 output/candidate_pairs.tsv
 output/*backup*.tsv
 catboost_info/
+checkpoints/
+venv/
+.venv/
+kaggle_deploy/
+siddhu/
